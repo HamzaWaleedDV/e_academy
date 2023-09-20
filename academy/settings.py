@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'academy_courses',
     'academy_blog',
-    'accounts',
     'tinymce',
 ]
 
@@ -148,4 +148,4 @@ TINYMCE_DEFAULT_CONFIG = {
     'toolbar': 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
 }
 
-AUTH_USER_MODEL = 'accounts.User1' 
+AUTH_USER_MODEL = 'accounts.Profile' 

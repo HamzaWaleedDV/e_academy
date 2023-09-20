@@ -1,6 +1,7 @@
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from .models import Profile
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import User1
 
 
 attrs = {'class': 'form-control'}
@@ -23,13 +24,8 @@ class UserLoginForm(AuthenticationForm):
     )
 
 
-class UserRegisterForm(UserCreationForm):
 
-    profile_image = forms.ImageField(
-        label="Choose your profile photo (optional)",
-        required=False
-    )
-
+class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(
         label='First Name',
         widget=forms.TextInput(attrs=attrs)
@@ -59,9 +55,10 @@ class UserRegisterForm(UserCreationForm):
         label='Password Confirmation',
         widget=forms.PasswordInput(attrs=attrs)
     )
-
-    status = forms.Select()
-
+    #HamzawaleedNasr123$
     class Meta(UserCreationForm.Meta):
-        model = User1
-        fields = UserCreationForm.Meta.fields + ("profile_image","status",)   
+        model = Profile
+        fields = UserCreationForm.Meta.fields + ("profile_image","status")
+
+
+    field_order = ['first_name', 'last_name', 'username', 'profile_image', 'email', 'password1', 'password2', 'status']    

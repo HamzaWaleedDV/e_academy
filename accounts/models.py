@@ -8,7 +8,7 @@ STATUS_CHOICES = (
     ('author', 'Author'),
 )
 
-class User1(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_image = models.ImageField(null=True, default='profile.jpg')
     status = models.CharField(
@@ -17,5 +17,7 @@ class User1(models.Model):
         default='What is your use of the academy?',
     )
 
-    USERNAME_FIELD = 'user'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'user__username'
+
+    def __str__(self):
+        return self.user.username
