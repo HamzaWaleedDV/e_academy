@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+    <style>
+        .vertical-line {
+            width: 1px; /* عرض الخط بالبكسل */
+            height: 100%; /* الارتفاع يمتد ليغطي العنصر بالكامل */
+            background-color: #80808081; /* لون الخط */
+            margin: 0 10px; /* هامش يمين ويسار للخط */
+        }
+    </style>
+  
+
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-12 px-0">
+                <div class="card-header">
+                    <h1 class="text-center">
+                        {% trans 'Hello ' %}{{ user.username }}{% trans '👋' %}
+                    </h1>
+                </div> 
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 text-center">
+                            <img src="{% static 'img/profile.jpg' %}" height="200px" width="200px" style="border-radius: 50%;" alt="{{ user.username }}">
+                            <h6>
+                                <span class="badge bg-info">student</span>
+                            </h6>
+                            <hr>
+                            <h5>{{ user.username }}</h5>
+                        </div>
+                        <div class="col-lg-3 justify-content-start">
+                            <div class="vertical-line"></div>
+                        </div>                        
+                        <div class="col-lg-3">
+                            
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

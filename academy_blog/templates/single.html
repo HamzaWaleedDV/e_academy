@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+
+    <body>
+        <!-- Header Start -->
+        <div class="container-fluid page-header" style="margin-bottom: 90px;">
+            <div class="container">
+                <div class="d-flex flex-column justify-content-center" style="min-height: 300px">
+                    <h3 class="display-4 text-white text-uppercase">{% trans 'Single' %}</h3>
+                    <div class="d-inline-flex text-white">
+                        <p class="m-0 text-uppercase"><a class="text-white" href="/">{% trans 'Home' %}</a></p>
+                        <i class="fa fa-angle-double-right pt-1 px-3"></i>
+                        <p class="m-0 text-uppercase">{% trans 'Single' %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+
+
+        <!-- Detail Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="mb-5">
+                            <h6 class="text-primary mb-3"> {{ art.created_at.date }} </h6>
+                            <h1 class="mb-5"> {{ art.title }} </h1>
+                            <hr>
+                            {{ art.subject|safe }}
+                            <hr>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'article_update' art.id %}">
+                                    <button class="btn btn-primary btn-block">
+                                        {% trans 'Edit article' %}
+                                    </button>
+                                </a>
+                                <hr>
+                                <a href="{% url 'article_delete' art.id %}">
+                                    <button class="btn btn-danger btn-block">
+                                        {% trans 'Delete article' %}
+                                    </button>
+                                </a>     
+                                <hr>
+                            {% endif %}
+                        </div>
+                        
+                        
+                        <!-- Comment List -->
+                        <div class="mb-5">
+                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">3 Comments</h3>
+                            <div class="media mb-4">
+                                <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"
+                                    style="width: 45px;">
+                                <div class="media-body">
+                                    <h6>John Doe <small><i>01 Jan 2045 at 12:00pm</i></small></h6>
+                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at.
+                                        Kasd diam tempor rebum magna dolores sed sed eirmod ipsum. Gubergren clita aliquyam
+                                        consetetur sadipscing, at tempor amet ipsum diam tempor consetetur at sit.</p>
+                                    <button class="btn btn-sm btn-secondary">Reply</button>
+                                </div>
+                            </div>
+                            <div class="media mb-4">
+                                <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"
+                                    style="width: 45px;">
+                                <div class="media-body">
+                                    <h6>John Doe <small><i>01 Jan 2045 at 12:00pm</i></small></h6>
+                                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at.
+                                        Kasd diam tempor rebum magna dolores sed sed eirmod ipsum. Gubergren clita aliquyam
+                                        consetetur sadipscing, at tempor amet ipsum diam tempor consetetur at sit.</p>
+                                    <button class="btn btn-sm btn-secondary">Reply</button>
+                                    <div class="media mt-4">
+                                        <img src="img/user.jpg" alt="Image" class="img-fluid rounded-circle mr-3 mt-1"
+                                            style="width: 45px;">
+                                        <div class="media-body">
+                                            <h6>John Doe <small><i>01 Jan 2045 at 12:00pm</i></small></h6>
+                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
+                                                et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.
+                                                Gubergren clita aliquyam consetetur, at tempor amet ipsum diam tempor at
+                                                sit.</p>
+                                            <button class="btn btn-sm btn-secondary">Reply</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment Form -->
+                        <div class="bg-secondary rounded p-5">
+                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Leave a comment</h3>
+                            <form>
+                                <div class="form-group">
+                                    <label for="name">Name *</label>
+                                    <input type="text" class="form-control border-0" id="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" class="form-control border-0" id="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">Website</label>
+                                    <input type="url" class="form-control border-0" id="website">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message">Message *</label>
+                                    <textarea id="message" cols="30" rows="5" class="form-control border-0"></textarea>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <input type="submit" value="Leave Comment" class="btn btn-primary py-md-2 px-md-4 font-weight-semi-bold">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 mt-5 mt-lg-0">
+                        <!-- Author Bio -->
+                        <div class="d-flex flex-column text-center bg-dark rounded mb-5 py-5 px-4">
+                            <img src="img/user.jpg" class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
+                            <h3 class="text-primary mb-3">John Doe</h3>
+                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Tag Cloud</h3>
+                            <p class="text-white m-0">Conset elitr erat vero dolor ipsum et diam, eos dolor lorem, ipsum sit
+                                no ut est ipsum erat kasd amet elitr</p>
+                        </div>
+
+                        <!-- Search Form -->
+                        <div class="mb-5">
+                            <form method="get" action="{% url 'article_view' %}">
+                                <div class="input-group">
+                                    <input name="q" type="text" class="form-control form-control-lg" value="{{ request.GET.q }}" placeholder="{% trans 'Search articles' %}">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+        
+                        <!-- Category List -->
+                        <div class="mb-5">
+                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">{% trans 'Categories' %}</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                    <a href="/blog" class="text-decoration-none h6 m-0"> {% trans 'All' %} </a>
+                                </li>
+                                {% for cat in cats %}  
+                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                        <a href="{% url 'article_view' cat.id %}" class="text-decoration-none h6 m-0"> {{ cat.title }} </a>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+        
+                        <!-- Recent Post -->
+                        <div class="mb-5">
+                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">{% trans 'Recent Post' %}</h3>
+                            {% for la in la_ar %}
+                                <a class="d-flex align-items-center text-decoration-none mb-3" href="{% url 'article_detail' la.id %}">
+                                    <img class="img-fluid rounded" width="50" height="50" src="{{ la.cover_image.url }}" alt="">
+                                    <div class="pl-3">
+                                        <h6 class="m-1"> {{ la.title }} </h6>
+                                        <small> {{ la.created_at.date }} </small>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Blog End -->
+
+    </body>
+
+{% endblock content %}
