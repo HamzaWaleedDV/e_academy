@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 # Create your models here.
 
@@ -68,9 +70,9 @@ class Opinion(models.Model):
         return self.name
 
 
-class New(models.Model):
-    subject = models.CharField(max_length=70)
-    message = models.TextField(max_length=5000)
+class Comment(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    message = HTMLField()
 
 
 class Slider(models.Model):

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
+{% load humanize %}
 {% block content %}
     
     <body>
@@ -32,7 +32,7 @@
                                         <img class="img-fluid" src="{{ article.cover_image.url }}" alt="">
                                         <a class="blog-overlay text-decoration-none" href="{% url 'article_detail' article.id %}">
                                             <h5 class="text-white mb-3"> {{ article.title }} </h5>
-                                            <p class="text-primary m-0"> {{ article.created_at.date }} </p>
+                                            <p class="text-primary m-0"> {{ article.created_at|naturaltime }} </p>
                                         </a>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                             {% endfor %}
                         </div>
                         
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated and user.is_staff %}
                             <a href="{% url 'article_create' %}">
                                 <button type="submit" class="btn btn-primary">
                                     {% trans 'Create' %}
@@ -123,7 +123,7 @@
                                     <img class="img-fluid rounded" width="50" height="50" src="{{ la.cover_image.url }}" alt="">
                                     <div class="pl-3">
                                         <h6 class="m-1"> {{ la.title }} </h6>
-                                        <small> {{ la.created_at.date }} </small>
+                                        <small> {{ la.created_at|naturaltime }} </small>
                                     </div>
                                 </a>
                             {% endfor %}

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Course, Video
+from .models import Course, Video, Comment
 
 
 field_attrs = {'class': 'form-control'}
@@ -9,9 +9,16 @@ class CourseForm(forms.ModelForm):
         model = Course
         fields = ['name', 'description', 'price', 'hour', 'min', 'image']
         widgets = {
-            'name': forms.TextInput(attrs=field_attrs),
-            'description': forms.Textarea(attrs=field_attrs),
+            'name': forms.TextInput(),
+            'description': forms.Textarea(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+        })
 
 
 class VideoForm(forms.ModelForm):
@@ -23,3 +30,9 @@ class VideoForm(forms.ModelForm):
             'desc': forms.Textarea(attrs=field_attrs),
             'course': forms.Select(attrs=field_attrs),
         }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['']

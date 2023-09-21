@@ -11,9 +11,9 @@
             <div class="col-lg-9 d-flex align-items-center justify-content-end">    
                 <div class="col-lg-4 d-none d-lg-block">
                     <a class="d-flex align-items-center justify-content-between bg-secondary w-100 text-decoration-none" data-toggle="collapse" href="#navbar-vertical" style="height: 67px; padding: 0 30px;">
-                        <input type="image" id="myimage"  style="height:45px;width:45px;border-radius: 50%;" src="{% static 'img/profile.jpg' %}" />
+                        <input type="image" id="myimage"  style="height:45px;width:45px;border-radius: 50%;" src="{{ user.profile.profile_image.url }}" />
                         <p class="text-primary m-0">
-                            {{ user.username }}
+                            {{ user.first_name }}  {{ user.last_name }}
                         </p>    
                         <i class="fa fa-angle-down text-primary"></i>
                     </a>

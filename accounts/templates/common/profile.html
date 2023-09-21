@@ -18,24 +18,43 @@
             <div class="card col-md-12 px-0">
                 <div class="card-header">
                     <h1 class="text-center">
-                        {% trans 'Hello ' %}{{ user.username }}{% trans '👋' %}
+                        {% trans 'Hello ' %}{{ user.first_name }}  {{ user.last_name }}{% trans '👋' %}
                     </h1>
                 </div> 
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-3 text-center">
-                            <img src="{% static 'img/profile.jpg' %}" height="200px" width="200px" style="border-radius: 50%;" alt="{{ user.username }}">
+                            <img src="{{ user.profile.profile_image.url }}" height="200px" width="200px" style="border-radius: 50%;" alt="{{ user.username }}">
+                            <br>
+                            <br>
                             <h6>
-                                <span class="badge bg-info">student</span>
+                                {% if user.is_staff %}
+                                    <span class="badge bg-primary">                                    
+                                        {% trans 'admin' %}                                            
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-info">                                    
+                                        {% trans 'student' %}                                            
+                                    </span>
+                                {% endif %}
+                                        
                             </h6>
                             <hr>
-                            <h5>{{ user.username }}</h5>
+                            <h5>{{ user.first_name }}  {{ user.last_name }}</h5>
                         </div>
-                        <div class="col-lg-3 justify-content-start">
+                        <div class="col-md-1 justify-content-start">
                             <div class="vertical-line"></div>
                         </div>                        
-                        <div class="col-lg-3">
-                            
+                        <div class="col-lg-6 justify-content-start">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% include 'common/form.html' with form=form %}
+                                <div class="d-grid gap-2 text-center">
+                                    <button type="submit" class="btn btn-info">
+                                        {% translate 'Save' %}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>   

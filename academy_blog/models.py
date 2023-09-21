@@ -13,7 +13,7 @@ class Category(models.Model):
 class Article(models.Model):
     cover_image = models.ImageField()
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=form100)
     subject = HTMLField(max_length=10000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

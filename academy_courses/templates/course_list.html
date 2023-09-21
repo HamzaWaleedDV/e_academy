@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-
+{% load humanize %}
 {% block content %}
 
 
@@ -34,88 +34,89 @@
     <hr>
     <br>
                 
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="row pb-3">
-                        <div class="card w-100 mb-3">
-                            <h5 class="card-header">
-                                {% trans 'Videos' %}
-                            </h5>
-                            <ul class="list-group list-group-flush">
-                                {% for video in videos %}
-                                    <li class="list-group-item">
-                                        <a href="{% url 'course_page' video.id %}">
-                                            {{ video.title }}
+        <div class="row" style="margin-left: 50px;">
+            <div class="col-lg-8">
+                <div class="card w-100 mb-3">
+                    <h5 class="card-header">
+                        {% trans 'Videos' %}
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                        {% for video in videos %}
+                            <li class="list-group-item">
+                                <a href="{% url 'course_page' video.id %}">
+                                    {{ video.title }}
+                                </a>
+                                
+                                {% if user.is_staff %}
+                                    <span class="float-right">
+                                        <a href="{% url 'video_update' video.id %}">
+                                            <i class="fa fa-edit"></i>
                                         </a>
-                                        <span class="float-right">
-                                            <a href="{% url 'video_update' video.id %}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            |
-                                            <a href="{% url 'video_delete' video.id %}">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
-                                        </span>
-                                    </li>
-                                    {% empty %}
-                                        <div class="col-md-12">
-                                            <div class="h-100 p-5 bg-white rounded-3 text-center">
-                                                <p>{% trans 'There are no videos to show' %}</p>
-                                                <p>
-                                                    <i class="fa fa-video fa-2x"></i>
-                                                </p>
-                                            </div>
-                                        </div>
-                                {% endfor %}
-                            </ul>
-    
-                            {% for c in cou %}
-                                {% if forloop.counter == 1 %}
-                                    <div class="button-container">
-                                        <a href="{% url 'course_update' c.id %}">
-                                            <button type="submit" class="btn btn-primary">
-                                                {% trans 'Edit Course' %}
-                                            </button>
+                                    |
+                                        <a href="{% url 'video_delete' video.id %}">
+                                            <i class="fa fa-trash"></i>
                                         </a>
-                                        <a href="{% url 'course_delete' c.id %}">
-                                            <button type="submit" class="btn btn-danger">
-                                                {% trans 'Delete Course' %}
-                                            </button>
-                                        </a>
-                                        <a href="{% url 'video_create' %}">
-                                            <button type="submit" class="btn btn-success">
-                                                {% trans 'Create Video' %}
-                                            </button>
-                                        </a>
-                                    </div>
+                                    </span>
                                 {% endif %}
-                            {% endfor %}    
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="col-lg-4 mt-5 mt-lg-0">
-                    <div class="mb-5">
-                        {% for c in cou %}
-                            {% if forloop.counter == 1 %}    
-                                <div class="col-lg-15 mt-5 mt-lg-0" style="margin-left: 50px;">
-                                    <div class="card bg-light mb-3" style="max-width: 18rem;">
-                                        <div class="card-header"> {% trans 'Description' %} </div>
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ c.name }}</h5>
-                                            <p class="card-text"> {{ c.description }} </p>
-                                        </div>
+                            </li>
+                            {% empty %}
+                                <div class="col-md-12">
+                                    <div class="h-100 p-5 bg-white rounded-3 text-center">
+                                        <p>{% trans 'There are no videos to show' %}</p>
+                                        <p>
+                                            <i class="fa fa-video fa-2x"></i>
+                                        </p>
                                     </div>
                                 </div>
-                            {% endif %}
                         {% endfor %}
-                    </div>
+                    </ul>
+
+                    {% for c in cou %}
+                        {% if forloop.counter == 1 and user.is_authenticated and user.is_staff %}
+                            <div class="button-container">
+                                <a href="{% url 'course_update' c.id %}">
+                                    <button type="submit" class="btn btn-primary">
+                                        {% trans 'Edit Course' %}
+                                    </button>
+                                </a>
+                                <a href="{% url 'course_delete' c.id %}">
+                                    <button type="submit" class="btn btn-danger">
+                                        {% trans 'Delete Course' %}
+                                    </button>
+                                </a>
+                                <a href="{% url 'video_create' %}">
+                                    <button type="submit" class="btn btn-success">
+                                        {% trans 'Create Video' %}
+                                    </button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}    
                 </div>
             </div>
         </div>
-    </div>
+        <hr>
+        <br>
+        <br>
+
+
+        <div class="row" style="margin-left: 50px;">
+            <div class="col-lg-8">
+                {% for c in cou %}
+                    {% if forloop.counter == 1 %}    
+                        <div class="col-lg-15 mt-5 mt-lg-0">
+                            <div class="card bg-light mb-3">
+                                <div class="card-header"> {% trans 'Course Description' %} </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ c.name }}</h5>
+                                    <p class="card-text"> {{ c.description }} </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>    
     
 {% endblock content %}
 

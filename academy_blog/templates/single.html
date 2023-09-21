@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load humanize %}
 {% block content %}
 
     <body>
@@ -25,12 +26,12 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="mb-5">
-                            <h6 class="text-primary mb-3"> {{ art.created_at.date }} </h6>
+                            <h6 class="text-primary mb-3"> {{ art.created_at|naturaltime }} </h6>
                             <h1 class="mb-5"> {{ art.title }} </h1>
                             <hr>
                             {{ art.subject|safe }}
                             <hr>
-                            {% if user.is_authenticated %}
+                            {% if user.is_authenticated and user.is_staff %}
                                 <a href="{% url 'article_update' art.id %}">
                                     <button class="btn btn-primary btn-block">
                                         {% trans 'Edit article' %}
@@ -115,14 +116,6 @@
                     </div>
 
                     <div class="col-lg-4 mt-5 mt-lg-0">
-                        <!-- Author Bio -->
-                        <div class="d-flex flex-column text-center bg-dark rounded mb-5 py-5 px-4">
-                            <img src="img/user.jpg" class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px;">
-                            <h3 class="text-primary mb-3">John Doe</h3>
-                            <h3 class="text-uppercase mb-4" style="letter-spacing: 5px;">Tag Cloud</h3>
-                            <p class="text-white m-0">Conset elitr erat vero dolor ipsum et diam, eos dolor lorem, ipsum sit
-                                no ut est ipsum erat kasd amet elitr</p>
-                        </div>
 
                         <!-- Search Form -->
                         <div class="mb-5">
@@ -159,7 +152,7 @@
                                     <img class="img-fluid rounded" width="50" height="50" src="{{ la.cover_image.url }}" alt="">
                                     <div class="pl-3">
                                         <h6 class="m-1"> {{ la.title }} </h6>
-                                        <small> {{ la.created_at.date }} </small>
+                                        <small> {{ la.created_at|naturaltime }} </small>
                                     </div>
                                 </a>
                             {% endfor %}
