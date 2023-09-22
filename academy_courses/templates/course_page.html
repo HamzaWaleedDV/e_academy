@@ -23,6 +23,17 @@
         </div>
     </div>
 
+    <div class="card w-75 mb-3 mx-auto">
+        <div class="card-header text-center">
+            <h2>
+                {% trans 'Students comments' %}
+            </h2>
+        </div>
+        <div class="card-body">
+            {% include 'comment/create.html' with video=video %}
+        </div>
+    </div>
+
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
 

@@ -1,6 +1,6 @@
 from django import forms
 from .models import Course, Video, Comment
-
+from tinymce.widgets import TinyMCE
 
 field_attrs = {'class': 'form-control'}
 
@@ -31,8 +31,3 @@ class VideoForm(forms.ModelForm):
             'course': forms.Select(attrs=field_attrs),
         }
 
-
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['']

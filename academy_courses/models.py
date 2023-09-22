@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
-from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from django.conf.global_settings import AUTH_USER_MODEL
 
 # Create your models here.
 
@@ -71,9 +71,10 @@ class Opinion(models.Model):
 
 
 class Comment(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    message = HTMLField()
-
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class Slider(models.Model):
     title = models.CharField(max_length=100)

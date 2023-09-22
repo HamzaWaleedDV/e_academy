@@ -62,7 +62,7 @@ class RegisterUserForm(UserCreationForm):
     # ADD THESE
     # I haven't worked out how to make them pretty, or how to include
     # the choices for the status, but I figure you can do that
-    profile_image = forms.ImageField(required=False)
+    profile_image = forms.ImageField()
 
     class Meta(UserCreationForm.Meta):
         fields = ('first_name', 'last_name', 'username', 'email', 'is_staff',)

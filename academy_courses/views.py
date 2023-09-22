@@ -1,15 +1,13 @@
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from .models import Course, Opinion, New, Slider, Urls, Video
+from .models import Course, Slider, Video, Comment
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .forms import CourseForm, VideoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-def user_is_logged_in(user):
-    return user.is_authenticated
 
 def index(request):
     slider = Slider.objects.all()
@@ -49,7 +47,7 @@ def course(request):
     )
 
 
-@user_passes_test(user_is_logged_in)
+@login_required
 def course_list(request, pk):
 
     query = request.GET.get('query')
@@ -122,3 +120,25 @@ class VideoDeleteView(LoginRequiredMixin, DeleteView):
     
     def get_success_url(self):
         return reverse('course_list', args=[self.object.course_id])
+    
+
+class CommentCreateView(CreateView):
+    model = Comment
+    fields = ['video', 'user', 'message']
+    http_method_names = ['post']
+
+    def get_success_url(self):
+        return reverse('course_page', args=[self.object.video.id]) 
+    
+    # def test_func(self):
+    #     project_id = self.request.POST.get('project', '')
+    #     return models.Project.objects.get(pk=project_id).user_id == self.request.user.id
+
+    
+
+class CommentDeleteView(DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return reverse('course_page', args=[self.object.video.id]) 
+    

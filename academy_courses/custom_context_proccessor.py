@@ -1,4 +1,4 @@
-from .models import Course, Opinion, Urls, Video, Slider
+from .models import Course, Opinion, Urls, Slider
 from academy_blog.models import Category, Article
 
 def slider_footer(request):
