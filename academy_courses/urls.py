@@ -15,4 +15,5 @@ urlpatterns = [
     path('course/video/delete/<int:pk>/', views.VideoDeleteView.as_view(), name='video_delete'),
     path('course/comment/create/', views.CommentCreateView.as_view(), name='comment_create'),
     path('course/comment/delete/<int:pk>/', views.CommentDeleteView.as_view(), name='comment_delete'),
+    path('nohasperm/', views.notperm, name='notaccess'),
 ]

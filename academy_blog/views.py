@@ -3,14 +3,24 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
-from .models import Article, Category
+from .models import Article
 from .froms import ArticleForm
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView
+
+
+
+def user_is_staff(user):
+    return user.is_staff
+
 
 # Create your views here.
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     form_class = ArticleForm
@@ -51,14 +61,14 @@ class ArticleDetailView(DetailView):
     context_object_name = 'art'
     template_name = 'single.html'
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     form_class = ArticleForm
     template_name = 'update.html'
     success_url = reverse_lazy('article_view')
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     template_name = 'delete.html'

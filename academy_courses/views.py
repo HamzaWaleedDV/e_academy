@@ -1,12 +1,26 @@
+from django.db import models
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from .models import Course, Slider, Video, Comment
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from .forms import CourseForm, VideoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
+
 
 # Create your views here.
+
+
+def notperm(request):
+    return render(
+        request,
+        'notaccess.html'
+    )
+
+def user_is_staff(user):
+    return user.is_staff
+
 
 
 def index(request):
@@ -57,7 +71,7 @@ def course_list(request, pk):
         where['name__icontains'] =  query
 
     video = Video.objects.filter(course=pk, **where).select_related('course')
-    course = Course.objects.filter(pk=pk)
+    course = Course.objects.get(pk=pk)
 
     return render(
         request,
@@ -74,37 +88,37 @@ class CourseDetailView(LoginRequiredMixin, DetailView):
     template_name = 'course_page.html'
     context_object_name = 'video'
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class CourseCreateView(LoginRequiredMixin, CreateView):
     model = Course
     form_class = CourseForm
     template_name = 'course/create.html'
     success_url = reverse_lazy('course')
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class CourseUpdateView(LoginRequiredMixin, UpdateView):
     model = Course
     form_class = CourseForm
     template_name = 'course/update.html'
     success_url = reverse_lazy('course')
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class CourseDeleteView(LoginRequiredMixin, DeleteView):
     model = Course
     template_name = 'course/delete.html'
     success_url = reverse_lazy('course')
 
-
-class VideoCreateView(LoginRequiredMixin, CreateView):
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
+class VideoCreateView(CreateView):
     model = Video
-    form_class = VideoForm
-    template_name = 'video/create.html'
+    fields = ['title', 'desc', 'video', 'course']
+    http_method_names = ['post']
     
 
     def get_success_url(self):
-        return reverse('course_list', args=[self.object.course_id])
+        return reverse('course_list', args=[self.object.course.id])
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class VideoUpdateView(LoginRequiredMixin, UpdateView):
     model = Video
     form_class = VideoForm
@@ -113,7 +127,7 @@ class VideoUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('course_list', args=[self.object.course_id])
 
-
+@method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class VideoDeleteView(LoginRequiredMixin, DeleteView):
     model = Video
     template_name = 'video/delete.html'
@@ -130,15 +144,14 @@ class CommentCreateView(CreateView):
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
     
-    # def test_func(self):
-    #     project_id = self.request.POST.get('project', '')
-    #     return models.Project.objects.get(pk=project_id).user_id == self.request.user.id
 
     
 
 class CommentDeleteView(DeleteView):
     model = Comment
+    http_method_names = ['post']
 
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
+    
     

@@ -25,11 +25,7 @@
     </style>
 
     <h1 class="text-center">
-        {% for c in cou %}
-            {% if forloop.counter == 1 %}
-                {{ c.name }}            
-            {% endif %}
-        {% endfor %}
+        {{ cou.name }}            
     </h1>
     <hr>
     <br>
@@ -71,52 +67,59 @@
                         {% endfor %}
                     </ul>
 
-                    {% for c in cou %}
-                        {% if forloop.counter == 1 and user.is_authenticated and user.is_staff %}
-                            <div class="button-container">
-                                <a href="{% url 'course_update' c.id %}">
-                                    <button type="submit" class="btn btn-primary">
-                                        {% trans 'Edit Course' %}
-                                    </button>
-                                </a>
-                                <a href="{% url 'course_delete' c.id %}">
-                                    <button type="submit" class="btn btn-danger">
-                                        {% trans 'Delete Course' %}
-                                    </button>
-                                </a>
-                                <a href="{% url 'video_create' %}">
-                                    <button type="submit" class="btn btn-success">
-                                        {% trans 'Create Video' %}
-                                    </button>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endfor %}    
+                    {% if user.is_authenticated and user.is_staff %}
+                        <div class="button-container">
+                            <a href="{% url 'course_update' cou.id %}">
+                                <button type="submit" class="btn btn-primary">
+                                    {% trans 'Edit Course' %}
+                                </button>
+                            </a>
+                            <a href="{% url 'course_delete' cou.id %}">
+                                <button type="submit" class="btn btn-danger">
+                                    {% trans 'Delete Course' %}
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        <br>
+
+        
+        {% if user.is_staff %}
+            <div class="row" style="margin-left: 50px;">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            {% trans 'Add Video' %}
+                        </div>
+                        <div class="card-body">
+                            {% include 'video/create.html' with course=cou %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        
+        
         <hr>
         <br>
         <br>
-
-
         <div class="row" style="margin-left: 50px;">
             <div class="col-lg-8">
-                {% for c in cou %}
-                    {% if forloop.counter == 1 %}    
-                        <div class="col-lg-15 mt-5 mt-lg-0">
-                            <div class="card bg-light mb-3">
-                                <div class="card-header"> {% trans 'Course Description' %} </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ c.name }}</h5>
-                                    <p class="card-text"> {{ c.description }} </p>
-                                </div>
-                            </div>
+                <div class="col-lg-15 mt-5 mt-lg-0">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header"> {% trans 'Course Description' %} </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cou.name }}</h5>
+                            <p class="card-text"> {{ cou.description }} </p>
                         </div>
-                    {% endif %}
-                {% endfor %}
+                    </div>
+                </div>
             </div>
-        </div>    
+        </div>  
+        
     
 {% endblock content %}
 
