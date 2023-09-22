@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'academy_courses',
     'academy_blog',
     'tinymce',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [

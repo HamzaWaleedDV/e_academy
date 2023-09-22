@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
-from tinymce.models import HTMLField
 from django.conf.global_settings import AUTH_USER_MODEL
+from django.utils.translation import gettext as _
 
 # Create your models here.
 
@@ -76,6 +76,7 @@ class Comment(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class Slider(models.Model):
     title = models.CharField(max_length=100)
     image = models.ImageField()
@@ -84,6 +85,7 @@ class Slider(models.Model):
         choices=ACTIVE_CHOICES,
         default='Select status',
     )
+
 
 class Urls(models.Model):
     title = models.CharField(max_length=30, default="My Urls")
@@ -96,3 +98,40 @@ class Urls(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class TransactionStatus(models.IntegerChoices):
+    Pending = 0, _('Pending')
+    Completed = 1, _('Completed')
+
+
+class Transaction(models.Model):
+    session = models.CharField(max_length=255)
+    amount = models.FloatField()
+    courses = models.JSONField(default=dict)
+    customer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    status = models.IntegerField(
+        choices=TransactionStatus.choices, default=TransactionStatus.Pending
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Order(models.Model):
+    transaction = models.OneToOneField(Transaction, on_delete=models.PROTECT, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)    
+
+    def __str__(self):
+        return str(self.id)
+    
+    class Meta:
+            verbose_name = _('Order')
+            verbose_name_plural = _('Orders')
+    
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.PROTECT)    
+    course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    price = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
