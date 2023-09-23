@@ -15,5 +15,9 @@ urlpatterns = [
     path('course/video/delete/<int:pk>/', views.VideoDeleteView.as_view(), name='video_delete'),
     path('course/comment/create/', views.CommentCreateView.as_view(), name='comment_create'),
     path('course/comment/delete/<int:pk>/', views.CommentDeleteView.as_view(), name='comment_delete'),
+    path('course/checkout/<int:pk>/', views.checkout, name='checkout'),
+    path('checkout/complete/', views.checkout_complete, name='checkout.complete'),
+    path('checkout/stripe/', views.stripe_transaction, name='checkout.stripe'),
+    path('checkout/stripe/config/', views.stripe_config, name='checkout.stripe.config'),
     path('nohasperm/', views.notperm, name='notaccess'),
 ]

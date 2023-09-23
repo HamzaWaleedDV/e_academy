@@ -106,10 +106,9 @@ class TransactionStatus(models.IntegerChoices):
 
 
 class Transaction(models.Model):
-    session = models.CharField(max_length=255)
+    course = models.CharField(max_length=255)
     amount = models.FloatField()
-    courses = models.JSONField(default=dict)
-    customer = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
+    customer = models.JSONField(default=dict)
     status = models.IntegerField(
         choices=TransactionStatus.choices, default=TransactionStatus.Pending
     )
@@ -132,6 +131,6 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)    
-    course = models.ForeignKey(Course, on_delete=models.PROTECT)
+    course = models.CharField(max_length=255)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)

@@ -149,3 +149,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
     'toolbar': 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
 }
+
+CURRENCY = 'USD'
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51NtWdsDLahRA4l85w357JYbfxsELq7Ry2X9f9TaJM51ce93wipRu2ypGL8hE8eNyjVljxE7VXHKbvjkxR6HlsgNc00FdWGyb9L'
+
+STRIPE_SECRET_KEY = 'sk_test_51NtWdsDLahRA4l85l7VsRrz2iyPV6e20C560o44Wm8uv4VUsGB3hzgssV1Fq9DxkUWeXqQUodgLuGgGWcMzAY55Z00L97dN9kR'

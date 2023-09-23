@@ -1,13 +1,18 @@
 from django.db import models
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from .models import Course, Slider, Video, Comment
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
-from .forms import CourseForm, VideoForm
+from .forms import CourseForm, VideoForm, UserInfoForm, ProductInfoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
-
+from django.conf.global_settings import AUTH_USER_MODEL
+from .models import Transaction
+from academy import settings 
+from django.utils.translation import gettext as _
+import stripe
 
 # Create your views here.
 
@@ -17,6 +22,7 @@ def notperm(request):
         request,
         'notaccess.html'
     )
+
 
 def user_is_staff(user):
     return user.is_staff
@@ -83,6 +89,18 @@ def course_list(request, pk):
     )
 
 
+def checkout(request, pk):
+    course = Course.objects.get(pk=pk)
+
+    return render(
+        request,
+        'course/checkout.html',
+        {
+            'course': course
+        }
+    )
+
+
 class CourseDetailView(LoginRequiredMixin, DetailView):
     model = Video
     template_name = 'course_page.html'
@@ -143,9 +161,7 @@ class CommentCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
-    
-
-    
+        
 
 class CommentDeleteView(DeleteView):
     model = Comment
@@ -154,4 +170,50 @@ class CommentDeleteView(DeleteView):
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
     
+
+def checkout_complete(request):
+    return render(
+        request,
+        'checkout-complete.html'
+    )
+
+@login_required
+def stripe_config(request):
+    return JsonResponse({
+        'public_key': settings.STRIPE_PUBLISHABLE_KEY
+    })
+
+@login_required
+def stripe_transaction(request):
+    transaction = make_transaction(request)
+
+    if not transaction:
+        return JsonResponse({
+            'message': _('Please enter valid information.')
+        }, status=400)
     
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    intent = stripe.PaymentIntent.create(
+        amount = transaction.amount * 100,
+        currency = settings.CURRENCY,
+        payment_method_types = ['card'],
+        metadata = {
+            'transaction': transaction.id
+        }
+    )
+    return JsonResponse({
+        'client_secret': intent['client_secret']
+    })
+
+
+@login_required
+def make_transaction(request):
+    form = UserInfoForm(request.POST)
+    form2 = ProductInfoForm(request.POST)
+    if form.is_valid() and form2.is_valid():
+
+        return Transaction.objects.create(
+            customer = form.cleaned_data,
+            amount = int(form2.cleaned_data['amount']),
+            course = form2.cleaned_data['course'],
+        )
