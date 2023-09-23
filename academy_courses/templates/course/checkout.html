@@ -113,7 +113,7 @@
                                             name="first_name"
                                             value="{{ user.first_name }}"
                                             required
-                                            
+                                            readonly="false"
                                             />
                                         </div>
                                     </div>
@@ -129,7 +129,7 @@
                                             name="last_name"
                                             value="{{ user.last_name }}"
                                             required
-                                            
+                                            readonly="false"
                                             />
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                     name="email"
                                     value="{{ user.email }}"
                                     required
-                                    
+                                    readonly="false"
                                     />
                                 </div>
                                 <div class="row">
@@ -161,7 +161,7 @@
                                             name="course"
                                             value="{{ course.name }}"
                                             required
-                                            
+                                            readonly="false"
                                             />
                                         </div>
                                     </div>
@@ -177,7 +177,13 @@
                                             name="amount"
                                             required
                                             value={{ course.price }}
-                                            
+                                            readonly="false"
+                                            />
+                                            <input
+                                            type="hidden"
+                                            id="course_id"
+                                            name="course_id"
+                                            value="{{ course.id }}"
                                             />
                                         </div>
                                     </div>

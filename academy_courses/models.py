@@ -106,6 +106,8 @@ class TransactionStatus(models.IntegerChoices):
 
 
 class Transaction(models.Model):
+    user_id = models.IntegerField()
+    course_id = models.IntegerField()
     course = models.CharField(max_length=255)
     amount = models.FloatField()
     customer = models.JSONField(default=dict)

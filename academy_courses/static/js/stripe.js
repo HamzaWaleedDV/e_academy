@@ -72,7 +72,7 @@ async function _checkStripePaymentStatus() {
 
 async function _stripeInit() {
     const { data } = await axios("/checkout/stripe/config/");
-    stripe = Stripe(data.public_key, { locale: 'en' });
+    stripe = Stripe(data.public_key, { locale: 'ar' });
     _checkStripePaymentStatus();
 }
 

@@ -216,4 +216,6 @@ def make_transaction(request):
             customer = form.cleaned_data,
             amount = int(form2.cleaned_data['amount']),
             course = form2.cleaned_data['course'],
+            user_id = request.user.id,
+            course_id = request.POST['course_id'],
         )

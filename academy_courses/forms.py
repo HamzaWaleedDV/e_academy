@@ -40,3 +40,4 @@ class UserInfoForm(forms.Form):
 class ProductInfoForm(forms.Form):
     course = forms.CharField(max_length=255)
     amount = forms.FloatField()
+    course_id = forms.IntegerField()
