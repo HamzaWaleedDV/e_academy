@@ -26,6 +26,11 @@
                         <div class="col-lg-3 text-center">
                             <img src="{{ user.profile.profile_image.url }}" height="200px" width="200px" style="border-radius: 50%;" alt="{{ user.username }}">
                             <br>
+                            <a href="{% url 'profile' %}">
+                                <small class="text-muted">
+                                    @{{ user.username|lower }}
+                                </small>
+                            </a>
                             <br>
                             <h6>
                                 {% if user.is_staff %}

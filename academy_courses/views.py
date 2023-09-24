@@ -15,7 +15,7 @@ import stripe
 
 # Create your views here.
 
-
+@login_required
 def notperm(request):
     return render(
         request,
@@ -25,11 +25,6 @@ def notperm(request):
 
 def user_is_staff(user):
     return user.is_staff
-
-
-def user_is_paied(user):
-    transaction = Transaction.objects.filter(user_id=user.id)
-    
 
 
 def index(request):
@@ -79,35 +74,81 @@ def course_list(request, pk):
     if query:
         where['name__icontains'] =  query
 
-    video = Video.objects.filter(course=pk, **where).select_related('course')
-    course = Course.objects.get(pk=pk)
 
-    return render(
-        request,
-        'course_list.html',
-        {
-            'videos': video,
-            'cou': course,
-        }
-    )
+    user_course = request.user.profile.courses
 
+    if pk in user_course:
+        video = Video.objects.filter(course=pk, **where).select_related('course')
+        course = Course.objects.get(pk=pk)
+        return render(
+            request,
+            'course_list.html',
+            {
+                'videos': video,
+                'cou': course,
+            }
+        )
+    else:
+        course1 = Course.objects.get(pk=pk)
+
+        return render(
+            request,
+            'course/checkout.html',
+            {
+                'course': course1
+            }
+        )
+
+
+
+    
 @login_required
-def checkout(request, pk):
-    course = Course.objects.get(pk=pk)
+def course_videos(request, pk):
+    videos = Video.objects.filter(pk=pk).all()
 
-    return render(
-        request,
-        'course/checkout.html',
-        {
-            'course': course
-        }
-    )
+    courses_id = []
+
+    for video1 in videos:
+        courses_id.append(video1.course_id)
 
 
-class CourseDetailView(LoginRequiredMixin, DetailView):
-    model = Video
-    template_name = 'course_page.html'
-    context_object_name = 'video'
+    user_courses = request.user.profile.courses
+
+
+    if user_courses is not None:
+        if courses_id[0] in user_courses:
+            for video in videos:
+                return render(
+                    request,
+                    'course_page.html',
+                    {
+                        'video': video
+                    }
+                )
+        else:
+            course1 = Course.objects.get(pk=courses_id[0])
+
+            return render(
+                request,
+                'course/checkout.html',
+                {
+                    'course': course1
+                }
+            )
+    elif courses_id is None or user_courses is None:
+        course1 = Course.objects.get(pk=courses_id[0])
+
+        return render(
+            request,
+            'course/checkout.html',
+            {
+                'course': course1
+            }
+        )    
+    else:
+        return redirect(reverse_lazy('login')) 
+
+
 
 @method_decorator(user_passes_test(user_is_staff, login_url=reverse_lazy('notaccess')), name='dispatch')
 class CourseCreateView(LoginRequiredMixin, CreateView):

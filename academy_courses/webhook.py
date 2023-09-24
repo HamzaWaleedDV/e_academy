@@ -3,6 +3,7 @@ import stripe
 import academy.settings as settings
 from django.http import HttpResponse
 from .models import Transaction, Order, Course
+from accounts.models import Profile
 
 
 @csrf_exempt
@@ -39,7 +40,15 @@ def stripe_webhook(request):
 def make_order(transaction_id):
     transaction = Transaction.objects.get(pk=transaction_id)
     order = Order.objects.create(transaction=transaction)
-    course = Course.objects.filter(pk=transaction.course_id)
+   
+    
+    if transaction.user.profile.courses is None:
+        transaction.user.profile.courses = [order.transaction.course_id]
+        transaction.user.profile.save()
+    elif transaction.user.profile.courses and order.transaction.course_id not in transaction.user.profile.courses:
+        transaction.user.profile.courses.append(order.transaction.course_id)
+        transaction.user.profile.save()
+
 
     order.orderproduct_set.create(
         course_id=transaction.course_id,
