@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, webhook
 
 urlpatterns = [
     path('', views.index, name="home"),
@@ -19,5 +19,6 @@ urlpatterns = [
     path('checkout/complete/', views.checkout_complete, name='checkout.complete'),
     path('checkout/stripe/', views.stripe_transaction, name='checkout.stripe'),
     path('checkout/stripe/config/', views.stripe_config, name='checkout.stripe.config'),
+    path('checkout/stripe/config/webhook/', webhook.stripe_webhook),
     path('nohasperm/', views.notperm, name='notaccess'),
 ]

@@ -130,6 +130,6 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.PROTECT)    
-    course = models.CharField(max_length=255)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
