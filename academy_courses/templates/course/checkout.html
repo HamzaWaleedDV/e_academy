@@ -95,102 +95,10 @@
                         </div>
                     </div>
                     <hr>
-                    <h4 class="my-3"> {% trans 'Your information' %} </h4>
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="form-user-info">
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="firstNameInput" class="form-label"
-                                            > {% trans 'First Name' %} </label
-                                            >
-                                            <input
-                                            type="text"
-                                            class="form-control"
-                                            id="firstNameInput"
-                                            name="first_name"
-                                            value="{{ user.first_name }}"
-                                            required
-                                            readonly="false"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="lastNameInput" class="form-label"
-                                            > {% trans 'Last Name' %} </label
-                                            >
-                                            <input
-                                            type="text"
-                                            class="form-control"
-                                            id="lastNameInput"
-                                            name="last_name"
-                                            value="{{ user.last_name }}"
-                                            required
-                                            readonly="false"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="emailInput" class="form-label"
-                                    > {% trans 'Email' %} </label
-                                    >
-                                    <input
-                                    type="email"
-                                    class="form-control"
-                                    id="emailInput"
-                                    name="email"
-                                    value="{{ user.email }}"
-                                    required
-                                    readonly="false"
-                                    />
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="course" class="form-label"
-                                            > {% trans 'Course' %} </label
-                                            >
-                                            <input
-                                            type="text"
-                                            class="form-control"
-                                            id="course"
-                                            name="course"
-                                            value="{{ course.name }}"
-                                            required
-                                            readonly="false"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="amount" class="form-label"
-                                            > {% trans 'Amount' %} </label
-                                            >
-                                            <input
-                                            type="text"
-                                            class="form-control"
-                                            id="amount"
-                                            name="amount"
-                                            required
-                                            value={{ course.price }}
-                                            readonly="false"
-                                            />
-                                            <input
-                                            type="hidden"
-                                            id="course_id"
-                                            name="course_id"
-                                            value="{{ course.id }}"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    <form id="form-user-info">
+                        {% csrf_token %}
+                        <input type="hidden" name="course" id="course" value="{{ course.id }}">
+                    </form>
                     <br>
                 
                     <h5 class="text-center">{% trans 'Buy course now!' %}</h5>

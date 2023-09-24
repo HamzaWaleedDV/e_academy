@@ -4,11 +4,10 @@ from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from .models import Course, Slider, Video, Comment
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
-from .forms import CourseForm, VideoForm, UserInfoForm, ProductInfoForm
+from .forms import CourseForm, VideoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
-from django.conf.global_settings import AUTH_USER_MODEL
 from .models import Transaction
 from academy import settings 
 from django.utils.translation import gettext as _
@@ -27,6 +26,10 @@ def notperm(request):
 def user_is_staff(user):
     return user.is_staff
 
+
+def user_is_paied(user):
+    transaction = Transaction.objects.filter(user_id=user.id)
+    
 
 
 def index(request):
@@ -88,7 +91,7 @@ def course_list(request, pk):
         }
     )
 
-
+@login_required
 def checkout(request, pk):
     course = Course.objects.get(pk=pk)
 
@@ -153,8 +156,7 @@ class VideoDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('course_list', args=[self.object.course_id])
     
-
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['video', 'user', 'message']
     http_method_names = ['post']
@@ -162,19 +164,18 @@ class CommentCreateView(CreateView):
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
         
-
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     http_method_names = ['post']
 
     def get_success_url(self):
         return reverse('course_page', args=[self.object.video.id]) 
     
-
+@login_required
 def checkout_complete(request):
     return render(
         request,
-        'checkout-complete.html'
+        'course/checkout-complete.html'
     )
 
 @login_required
@@ -194,7 +195,7 @@ def stripe_transaction(request):
     
     stripe.api_key = settings.STRIPE_SECRET_KEY
     intent = stripe.PaymentIntent.create(
-        amount = transaction.amount * 100,
+        amount = int(transaction.course.price * 100),
         currency = settings.CURRENCY,
         payment_method_types = ['card'],
         metadata = {
@@ -208,14 +209,8 @@ def stripe_transaction(request):
 
 @login_required
 def make_transaction(request):
-    form = UserInfoForm(request.POST)
-    form2 = ProductInfoForm(request.POST)
-    if form.is_valid() and form2.is_valid():
 
-        return Transaction.objects.create(
-            customer = form.cleaned_data,
-            amount = int(form2.cleaned_data['amount']),
-            course = form2.cleaned_data['course'],
-            user_id = request.user.id,
-            course_id = request.POST['course_id'],
-        )
+    return Transaction.objects.create(
+        user = request.user,
+        course_id = request.POST['course'],
+    )

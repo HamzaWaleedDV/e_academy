@@ -1,5 +1,5 @@
 from django import forms
-from .models import Course, Video, Comment
+from .models import Course, Video, Transaction
 from tinymce.widgets import TinyMCE
 
 field_attrs = {'class': 'form-control'}
@@ -30,14 +30,3 @@ class VideoForm(forms.ModelForm):
             'desc': forms.Textarea(attrs=field_attrs),
             'course': forms.Select(attrs=field_attrs),
         }
-
-class UserInfoForm(forms.Form):
-    first_name = forms.CharField(max_length=100)
-    last_name = forms.CharField(max_length=100)
-    email = forms.EmailField()
-
-
-class ProductInfoForm(forms.Form):
-    course = forms.CharField(max_length=255)
-    amount = forms.FloatField()
-    course_id = forms.IntegerField()

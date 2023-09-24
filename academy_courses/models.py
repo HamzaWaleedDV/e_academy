@@ -106,11 +106,8 @@ class TransactionStatus(models.IntegerChoices):
 
 
 class Transaction(models.Model):
-    user_id = models.IntegerField()
-    course_id = models.IntegerField()
-    course = models.CharField(max_length=255)
-    amount = models.FloatField()
-    customer = models.JSONField(default=dict)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.PROTECT)
+    course = models.ForeignKey(Course, on_delete=models.PROTECT)
     status = models.IntegerField(
         choices=TransactionStatus.choices, default=TransactionStatus.Pending
     )
