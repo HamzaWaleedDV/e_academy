@@ -2,6 +2,14 @@
 {% load i18n %}
 {% block content %}
     
+    <script>
+        window.onload = function() {
+            if(!window.location.hash) {
+                window.location = window.location + '#loaded';
+                window.location.reload();
+            }
+        }
+    </script>
 
     <div class="row">
         <div class="col-lg-3">
@@ -22,7 +30,7 @@
                     <br>
                     {% trans 'Now! You can enjoy and study your course' %}
                     <hr>
-                    <a href="">
+                    <a href="{% url 'course_list' id %}">
                         <button class="btn btn-primary">
                             {% trans 'Go to course' %}
                         </button>

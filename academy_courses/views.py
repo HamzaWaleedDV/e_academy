@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from .models import Course, Slider, Video, Comment
-from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from .forms import CourseForm, VideoForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -77,17 +77,29 @@ def course_list(request, pk):
 
     user_course = request.user.profile.courses
 
-    if pk in user_course:
-        video = Video.objects.filter(course=pk, **where).select_related('course')
-        course = Course.objects.get(pk=pk)
-        return render(
-            request,
-            'course_list.html',
-            {
-                'videos': video,
-                'cou': course,
-            }
-        )
+
+    if user_course is not None:
+        if pk in user_course:
+            video = Video.objects.filter(course=pk, **where).select_related('course')
+            course = Course.objects.get(pk=pk)
+            return render(
+                request,
+                'course_list.html',
+                {
+                    'videos': video,
+                    'cou': course,
+                }
+            )
+        else:
+            course1 = Course.objects.get(pk=pk)
+
+            return render(
+                request,
+                'course/checkout.html',
+                {
+                    'course': course1
+                }
+            )
     else:
         course1 = Course.objects.get(pk=pk)
 
@@ -97,7 +109,8 @@ def course_list(request, pk):
             {
                 'course': course1
             }
-        )
+        )  
+         
 
 
 
@@ -214,10 +227,20 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
     
 @login_required
 def checkout_complete(request):
-    return render(
-        request,
-        'course/checkout-complete.html'
-    )
+
+    try:
+        course_id = request.user.profile.courses[-1]
+
+        return render(
+            request,
+            'course/checkout-complete.html',
+            {
+                'id': course_id
+            }
+        )
+    except:
+        return redirect(reverse_lazy('checkout.complete'))
+
 
 @login_required
 def stripe_config(request):
