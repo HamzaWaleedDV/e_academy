@@ -1,8 +1,11 @@
 from django.urls import path
 from . import views, webhook
+from .views import set_language
+
 
 urlpatterns = [
     path('', views.index, name="home"),
+    path('set-language/', set_language, name='set_language'),
     path('about/', views.about, name='about'),
     path('courses/', views.course, name='course'),
     path('course/<int:pk>/', views.course_list, name='course_list'),

@@ -1,12 +1,34 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.http import HttpResponseRedirect
 from .forms import RegisterUserForm, ProfileForm
 from .models import Profile
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
+from django.utils import translation
+import re
+from academy import settings
 
 # Create your views here.
+
+
+
+
+
+class SwitchLangView(View):
+  def dispatch(self, request, *args, **kwargs):
+    lang = kwargs['lang']
+    translation.activate(lang)
+    next = request.GET.get('next')
+    next = re.sub('ar|en', lang, next, 1)
+    response = HttpResponseRedirect(next)
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
+    return response
+
+
+
 
 class RegisterView(CreateView):
     form_class = RegisterUserForm

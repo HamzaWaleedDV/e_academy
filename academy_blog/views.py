@@ -1,6 +1,3 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from .models import Article

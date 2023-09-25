@@ -1,5 +1,5 @@
 from django.db import models
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from .models import Course, Slider, Video, Comment
@@ -11,9 +11,20 @@ from django.utils.decorators import method_decorator
 from .models import Transaction
 from academy import settings 
 from django.utils.translation import gettext as _
+from django.utils import translation
 import stripe
 
 # Create your views here.
+
+
+def set_language(request):
+    language = request.POST.get('language')
+    translation.activate(language)
+    response = HttpResponseRedirect(reverse_lazy('home'))
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, language)
+    return response
+
+
 
 @login_required
 def notperm(request):

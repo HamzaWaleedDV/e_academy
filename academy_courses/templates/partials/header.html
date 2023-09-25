@@ -23,9 +23,17 @@
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link" data-toggle="dropdown"> <i class="fa fa-language"></i> {% trans 'Language' %} <i class="fa fa-angle-down float-right mt-1"></i></a>
                                 <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-10 w-100 m-0">
-                                    <a href="" class="dropdown-item"><i class="fa fa-arabic"></i>{% trans 'Arabic' %}</a>
-                                    <hr class="dropdown-divider">
-                                    <a href="" class="dropdown-item"><i class="fa fa-english"></i>{% trans 'English' %}</a>
+                                    <form action="{% url 'set_language' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="language" value="en" />
+                                        <button class="btn btn-dark" type="submit">{% trans 'English' %}</button>
+                                    </form>
+                                    <br>
+                                    <form action="{% url 'set_language' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="language" value="ar" />
+                                        <button class="btn btn-dark" type="submit">{% trans 'Arabic' %}</button>
+                                    </form>
                                 </div>
                             </div>
                             <a href="{% url 'logout' %}" class="nav-item nav-link"><i class="fa fa-sign-out-alt"></i>{% trans ' Logout' %}</a>

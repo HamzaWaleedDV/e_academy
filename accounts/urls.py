@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('profile/', views.edit_profile, name='profile'),
     path('', include('django.contrib.auth.urls')),
+    path('<str:lang>/', views.SwitchLangView.as_view(), name='switch-lang')
 ]

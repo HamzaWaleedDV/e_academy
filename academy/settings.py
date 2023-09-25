@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -113,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
@@ -157,3 +158,5 @@ STRIPE_PUBLISHABLE_KEY = 'pk_test_51NtWdsDLahRA4l85w357JYbfxsELq7Ry2X9f9TaJM51ce
 STRIPE_ENDPOINT_SECRET = 'whsec_75bb5687a7bb6245a295da45ef55b4ca40eee937254c66391d23118db90edc15'
 
 STRIPE_SECRET_KEY = 'sk_test_51NtWdsDLahRA4l85l7VsRrz2iyPV6e20C560o44Wm8uv4VUsGB3hzgssV1Fq9DxkUWeXqQUodgLuGgGWcMzAY55Z00L97dN9kR'
+
+LANGUAGE_COOKIE_NAME = "lang"
