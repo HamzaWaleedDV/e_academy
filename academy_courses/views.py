@@ -250,7 +250,7 @@ def checkout_complete(request):
             }
         )
     except:
-        return redirect(reverse_lazy('checkout.complete'))
+        return redirect(reverse_lazy('home'))
 
 
 @login_required
