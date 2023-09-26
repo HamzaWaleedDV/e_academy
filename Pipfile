@@ -8,6 +8,10 @@ pillow = "*"
 django-tinymce = "*"
 django = "*"
 django-cleanup = "*"
+dj-database-url = "*"
+whitenoise = "*"
+psycopg2 = "*"
+gunicorn = "*"
 
 [dev-packages]
 

@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,10 +90,18 @@ WSGI_APPLICATION = 'academy.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'e_courses',
+        'USER': 'hamzawaleed',
+        'PASSWORD': 'xI1W8KZKxTqMgv2FHzBY3fB9ghjZ96Ps',
+        'HOST': 'dpg-ck9bsmegtj9c73brojh0-a',
+        'PORT': '5432',
     }
 }
+
+
+database_url = os.environ.get('DATABASE_URL')
+DATABASES['default'] = dj_database_url.parse('postgres://hamzawaleed:xI1W8KZKxTqMgv2FHzBY3fB9ghjZ96Ps@dpg-ck9bsmegtj9c73brojh0-a.oregon-postgres.render.com/e_courses')
 
 
 # Password validation
@@ -129,8 +141,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media/'
+MEDIA_URL = '/static/media/'
+MEDIA_ROOT = 'static/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
