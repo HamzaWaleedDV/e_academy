@@ -239,18 +239,11 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 @login_required
 def checkout_complete(request):
 
-    try:
-        course_id = request.user.profile.courses[-1]
 
-        return render(
-            request,
-            'course/checkout-complete.html',
-            {
-                'id': course_id
-            }
-        )
-    except:
-        return redirect(reverse_lazy('checkout.complete'))
+    return render(
+        request,
+        'course/checkout-complete.html',
+    )
 
 
 @login_required
